@@ -12,7 +12,12 @@
           "package_name": "com.example.musik_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "43918566961-82vtdgr2dcdsr5gtjd91djp52o0a3q1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAfTUhJzSbKOgE-HMsGBaBsfKMLfEBaSiQ"

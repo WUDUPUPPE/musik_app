@@ -34,16 +34,19 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
       _errorMessage = null;
     });
-
+    // --- Prüft Email&Passwort
     try {
       await _authService.signInWithEmail(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-
+      // --- Leitet mich direkt an HomeScreen nach Stack löschen ---
+      if (mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
     } on Exception catch (e) {
       setState(() {
-        _errorMessage = e.toString().replaceAll(RegExp(r'\[.*?\]\s*'), '');
+        _errorMessage = "Your Mail|Password don´t match!";
       });
     } finally {
       if (mounted) {

@@ -28,7 +28,7 @@ class _SonarAppState extends State<SonarApp> {
   final authService = AuthService();
 
   // --- ThemeMode-State tauscht light/dark ---
-  ThemeMode _themeMode = ThemeMode.dark;
+  ThemeMode _themeMode = ThemeMode.system;
 
   // --- DarkMode Toggle ---
   void _toggleTheme() {

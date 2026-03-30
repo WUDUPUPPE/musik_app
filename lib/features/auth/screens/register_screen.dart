@@ -45,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } on Exception catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = "Your Mail already exists!";
       });
     } finally {
       if (mounted) {
@@ -95,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return 'Bitte Passwort eingeben';
                     }
                     if (value.length < 6) {
-                      return 'Mindestens 6 Zeichen';
+                      return 'Mindestens 8 Zeichen';
                     }
                     return null;
                   },

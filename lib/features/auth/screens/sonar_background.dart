@@ -24,19 +24,19 @@ class _SonarBackgroundState extends State<SonarBackground>
     // Slow glow pulse
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 3000),
+      duration: const Duration(milliseconds: 300),
     )..repeat(reverse: true);
 
     // Gentle float movement
     _floatController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 4500),
+      duration: const Duration(milliseconds: 450),
     )..repeat(reverse: true);
 
     // Particle drift
     _particleController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 8000),
+      duration: const Duration(milliseconds: 800),
     )..repeat();
   }
 
@@ -63,42 +63,45 @@ class _SonarBackgroundState extends State<SonarBackground>
 
         // SONAR letters
         Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(5, (i) {
-              const letters = ['S', 'O', 'N', 'A', 'R'];
-              // Each letter has slightly different timing offset
-              final floatOffset = i * 0.15;
-              final xOffsets = [6.0, 18.0, -12.0, 22.0, -10.0];
-              final rotations = [2.5, -2.0, 1.5, -3.0, 2.2];
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(5, (i) {
+                const letters = ['S', 'O', 'N', 'A', 'R'];
+                // Each letter has slightly different timing offset
+                final floatOffset = i * 0.15;
+                final xOffsets = [4.0, 20.0, -16.0, 24.0, -12.0];
+                final rotations = [3.5, -1.0, 2.5, -4.0, 3.2];
 
-              return AnimatedBuilder(
-                animation: Listenable.merge([_pulseController, _floatController]),
-                builder: (context, child) {
-                  // Staggered float per letter
-                  final floatVal = sin(
-                    (_floatController.value + floatOffset) * pi * 2,
-                  );
-                  final pulseVal = _pulseController.value;
+                return AnimatedBuilder(
+                  animation: Listenable.merge([_pulseController, _floatController]),
+                  builder: (context, child) {
+                    // Staggered float per letter
+                    final floatVal = sin(
+                      (_floatController.value + floatOffset) * pi * 2,
+                    );
+                    final pulseVal = _pulseController.value;
 
-                  return Transform.translate(
-                    offset: Offset(
-                      xOffsets[i] + floatVal * 3, // subtle horizontal sway
-                      floatVal * 5, // subtle vertical float
-                    ),
-                    child: Transform.rotate(
-                      angle: rotations[i] * pi / 180,
-                      child: _GlassLetter(
-                        letter: letters[i],
-                        pulseValue: pulseVal,
-                        index: i,
+                    return Transform.translate(
+                      offset: Offset(
+                        xOffsets[i] + floatVal * 3, // subtle horizontal sway
+                        floatVal * 5, // subtle vertical float
                       ),
-                    ),
-                  );
-                },
-              );
-            }),
-          ),
+                      child: Transform.rotate(
+                        angle: rotations[i] * pi / 180,
+                        child: _GlassLetter(
+                          letter: letters[i],
+                          pulseValue: pulseVal,
+                          index: i,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }),
+            ),
+        )
         ),
       ],
     );
@@ -120,7 +123,7 @@ class _GlassLetter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Glow intensity pulsing subtly
-    final glowOpacity = 0.4 + pulseValue * 0.25;
+    final glowOpacity = 0.6 + pulseValue * 0.25;
     final glowSpread = 20.0 + pulseValue * 12.0;
     final glowBlur = 30.0 + pulseValue * 15.0;
 
@@ -155,7 +158,7 @@ class _GlassLetter extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFFE8D0FF), // Bright lavender top
+                Color(0xFF080110), // Bright lavender top
                 Color(0xFFB060FF), // Bright purple
                 Color(0xFF8030E0), // Mid purple
                 Color(0xFF5A18B0), // Deep purple

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../home_screen.dart';
+import '../../../widgets/base_screen.dart';
 import '../services/auth_service.dart';
 import 'register_screen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -66,14 +65,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Anmelden')),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
+    return BaseScreen(
+      appBar: AppBar(title: const Text('Anmelden')),  // AppBar bleibt
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
               children: [
                 TextFormField(
                   controller: _emailController,
@@ -138,7 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-      ),
     );
   }
 }

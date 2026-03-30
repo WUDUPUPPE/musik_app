@@ -24,19 +24,19 @@ class _SonarBackgroundState extends State<SonarBackground>
     // Slow glow pulse
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 4000),
     )..repeat(reverse: true);
 
     // Gentle float movement
     _floatController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 450),
+      duration: const Duration(milliseconds: 5500),
     )..repeat(reverse: true);
 
     // Particle drift
     _particleController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 8000),
     )..repeat();
   }
 
@@ -70,8 +70,8 @@ class _SonarBackgroundState extends State<SonarBackground>
               children: List.generate(5, (i) {
                 const letters = ['S', 'O', 'N', 'A', 'R'];
                 // Each letter has slightly different timing offset
-                final floatOffset = i * 0.15;
-                final xOffsets = [4.0, 20.0, -16.0, 24.0, -12.0];
+                final floatOffset = i * 0.10;
+                final xOffsets = [2.0, 15.0, -4.0, 21.0, -8.0];
                 final rotations = [3.5, -1.0, 2.5, -4.0, 3.2];
 
                 return AnimatedBuilder(
@@ -85,8 +85,8 @@ class _SonarBackgroundState extends State<SonarBackground>
 
                     return Transform.translate(
                       offset: Offset(
-                        xOffsets[i] + floatVal * 3, // subtle horizontal sway
-                        floatVal * 5, // subtle vertical float
+                        xOffsets[i] + floatVal * 1.7, // subtle horizontal sway
+                        floatVal * 2.5, // subtle vertical float
                       ),
                       child: Transform.rotate(
                         angle: rotations[i] * pi / 180,
@@ -123,9 +123,9 @@ class _GlassLetter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Glow intensity pulsing subtly
-    final glowOpacity = 0.6 + pulseValue * 0.25;
+    final glowOpacity = 0.7 + pulseValue * 0.25;
     final glowSpread = 20.0 + pulseValue * 12.0;
-    final glowBlur = 30.0 + pulseValue * 15.0;
+    final glowBlur = 28.0 + pulseValue * 15.0;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
@@ -137,15 +137,15 @@ class _GlassLetter extends StatelessWidget {
             letter,
             style: TextStyle(
               fontSize: 160,
-              fontWeight: FontWeight.w900,
-              color: Color.fromRGBO(140, 60, 255, glowOpacity),
+              fontWeight: FontWeight.w500,
+              color: Color.fromRGBO(71, 235, 127, glowOpacity),
               shadows: [
                 Shadow(
-                  color: Color.fromRGBO(130, 40, 220, glowOpacity * 0.7),
+                  color: Color.fromRGBO(91, 235, 177, glowOpacity * 0.6),
                   blurRadius: glowBlur,
                 ),
                 Shadow(
-                  color: Color.fromRGBO(170, 80, 255, glowOpacity * 0.4),
+                  color: Color.fromRGBO(91, 235, 177, glowOpacity * 0.4),
                   blurRadius: glowSpread,
                 ),
               ],
@@ -158,11 +158,11 @@ class _GlassLetter extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFF080110), // Bright lavender top
-                Color(0xFFB060FF), // Bright purple
-                Color(0xFF8030E0), // Mid purple
-                Color(0xFF5A18B0), // Deep purple
-                Color(0xFF7A40D0), // Bottom reflection
+                Color(0xFF080110),
+                Color(0xFF210232),
+                Color(0xFF370E47),
+                Color(0xFF150D23),
+                Color(0xFF007B5E),
               ],
               stops: [0.0, 0.2, 0.5, 0.78, 1.0],
             ).createShader(bounds),
@@ -170,9 +170,9 @@ class _GlassLetter extends StatelessWidget {
             child: Text(
               letter,
               style: const TextStyle(
-                fontSize: 160,
+                fontSize: 170,
                 fontWeight: FontWeight.w900,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ),
@@ -181,23 +181,23 @@ class _GlassLetter extends StatelessWidget {
           ClipRect(
             child: Align(
               alignment: Alignment.topCenter,
-              heightFactor: 0.45,
+              heightFactor: 1,
               child: ShaderMask(
                 shaderCallback: (bounds) => LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.white.withValues(alpha: 0.35 + pulseValue * 0.1),
-                    Colors.white.withValues(alpha: 0.0),
+                    Colors.white10.withValues(alpha: 0.35 + pulseValue * 0.1),
+                    Colors.white10.withValues(alpha: 0.0),
                   ],
                 ).createShader(bounds),
                 blendMode: BlendMode.srcIn,
                 child: Text(
                   letter,
                   style: const TextStyle(
-                    fontSize: 160,
+                    fontSize: 162,
                     fontWeight: FontWeight.w900,
-                    color: Colors.white,
+                    color: Colors.deepPurple,
                   ),
                 ),
               ),

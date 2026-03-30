@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../widgets/base_screen.dart';
 import '../services/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -43,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (mounted) {
         Navigator.of(context).pop(); // zurück zum Login / Welcome
       }
-    } on Exception catch (e) {
+    } on Exception {
       setState(() {
         _errorMessage = "Your Mail already exists!";
       });
@@ -58,12 +59,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScreen(
       appBar: AppBar(title: const Text('Registrieren')),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Form(
             key: _formKey,
             child: Column(
               children: [
@@ -142,7 +142,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
-      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musik_app/widgets/base_screen.dart';
 import 'auth/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,22 +38,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BaseScreen(
       appBar: AppBar(
         title: const Text('SONAR'),
         actions: [
           IconButton(
-            icon: Icon(
-              widget.themeMode == ThemeMode.dark
-                  ? Icons.light_mode_rounded   // Sonne → wechselt zu Light
-                  : Icons.dark_mode_rounded,   // Mond  → wechselt zu Dark
-            ),
+            icon: Icon(widget.themeMode == ThemeMode.dark
+                ? Icons.light_mode_rounded
+                : Icons.dark_mode_rounded),
             onPressed: widget.onToggleTheme,
           ),
         ],
-      ),
-      body: Center(
-        child: _pages.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -80,9 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed, // wichtig für 5 Items
         selectedItemColor: Colors.deepPurple,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: Colors.tealAccent,
         onTap: _onItemTapped,
       ),
+      child: _pages.elementAt(_selectedIndex),
     );
   }
 }

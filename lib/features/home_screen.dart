@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'auth/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final VoidCallback onToggleTheme;
+  final ThemeMode themeMode;
+  const HomeScreen({super.key,
+    required this.onToggleTheme,
+    required this.themeMode,});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -28,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _logout() async {
     await AuthService().signOut();
-    // Durch authStateChanges() in main.dart fällst du dann automatisch auf WelcomeScreen zurück
+    // Durch authStateChanges() in main.dart fällt man automatisch auf WelcomeScreen zurück
   }
 
   @override
@@ -38,9 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('SONAR'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Abmelden',
-            onPressed: _logout,
+            icon: Icon(
+              widget.themeMode == ThemeMode.dark
+                  ? Icons.light_mode_rounded   // Sonne → wechselt zu Light
+                  : Icons.dark_mode_rounded,   // Mond  → wechselt zu Dark
+            ),
+            onPressed: widget.onToggleTheme,
           ),
         ],
       ),

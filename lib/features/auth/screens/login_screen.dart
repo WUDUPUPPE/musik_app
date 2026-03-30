@@ -41,16 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordController.text.trim(),
       );
 
-      // Erfolgreich: Navigator poppen, StreamBuilder in main.dart schaltet auf HomeScreen
-      if (mounted) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-              (route) => false,
-        );
-      }
     } on Exception catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = e.toString().replaceAll(RegExp(r'\[.*?\]\s*'), '');
       });
     } finally {
       if (mounted) {

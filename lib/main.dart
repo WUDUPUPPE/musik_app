@@ -6,44 +6,72 @@ import 'features/auth/services/auth_service.dart';
 import 'features/auth/screens/welcome_screen.dart';
 import 'features/home_screen.dart';
 
+// ---- APP START ----
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   runApp(const SonarApp());
 }
 
-class SonarApp extends StatelessWidget {
+// ---- ROOT WIDGETS (STATEFUL FÜR THEMEMODE-TOGGLE) ----
+class SonarApp extends StatefulWidget {
   const SonarApp({super.key});
+
+  static _SonarAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_SonarAppState>();
+  @override
+  State<SonarApp> createState() => _SonarAppState();
+}
+
+class _SonarAppState extends State<SonarApp> {
+  // --- AuthService einmal erstellen ---
+  final authService = AuthService();
+
+  // --- ThemeMode-State tauscht light/dark ---
+  ThemeMode _themeMode = ThemeMode.dark;
+
+  // --- DarkMode Toggle ---
+  void _toggleTheme() {
+    setState(() {
+      _themeMode =
+      _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final authService = AuthService();
-
     return MaterialApp(
       title: 'SONAR',
-
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      debugShowCheckedModeBanner: false,
+      // ← kein "DEBUG"-Banner
+      // --- ThemeMode ---
+      themeMode: _themeMode,
+      // --- LightTheme ---
+      theme: ThemeData(useMaterial3: true, colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xFF6C63FF), brightness: Brightness.light,),
       ),
+      // --- DarkTheme ---
+      darkTheme: ThemeData(
+        useMaterial3: true, colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xFF6C63FF), brightness: Brightness.dark,),
+      ),
+
+      // ---- AUTH-GATE: SCREEN_USE ----
       home: StreamBuilder(
         stream: authService.authStateChanges,
         builder: (context, snapshot) {
-          // Ladezustand
+          // --- Ladezustand (Firebase prüft) ---
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
           }
-
+          // --- Eingeloggt -> HomeScreen ---
           if (snapshot.hasData) {
-            // Eingeloggt -> HomeLayout
-            return const HomeScreen();
+            return HomeScreen(
+                onToggleTheme: _toggleTheme, themeMode: _themeMode);
           }
-
-          // Nicht eingeloggt -> WelcomeLayout
+          // --- nicht eingeloggt -> WelcomeScreen ---
           return const WelcomeScreen();
         },
       ),

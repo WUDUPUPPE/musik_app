@@ -31,6 +31,7 @@ class SonarApp extends StatelessWidget {
       home: StreamBuilder(
         stream: authService.authStateChanges,
         builder: (context, snapshot) {
+          // Ladezustand
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Scaffold(
               body: Center(child: CircularProgressIndicator()),

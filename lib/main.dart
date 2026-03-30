@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-void main() async {
-  // WICHTIG: Widgets müssen initialisiert sein, bevor Firebase startet
-  WidgetsFlutterBinding.ensureInitialized();
+import 'features/auth/services/auth_service.dart';
+import 'features/auth/screens/welcome_screen.dart';
+import 'features/home_screen.dart';
 
-  // Firebase mit den generierten Optionen initialisieren
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   runApp(const SonarApp());
 }
 
@@ -19,69 +19,31 @@ class SonarApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authService = AuthService();
+
     return MaterialApp(
-      title: 'SONAR App',
-      // Dein App-Theme (Farben kannst du später anpassen)
+      title: 'SONAR',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
-    );
-  }
-}
+      home: StreamBuilder(
+        stream: authService.authStateChanges,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+          if (snapshot.hasData) {
+            // Eingeloggt -> HomeLayout
+            return const HomeScreen();
+          }
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  // Hier testen wir gleich, ob die Bottom-Navigation funktioniert
-  int _selectedIndex = 0;
-
-  // Später packen wir hier die echten Screens rein
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Home Screen (Firebase ist verbunden!)', style: TextStyle(fontSize: 20)),
-    Text('Favorites Screen', style: TextStyle(fontSize: 20)),
-    Text('Erkennung (Mikrofon)', style: TextStyle(fontSize: 20)),
-    Text('Suchen Screen', style: TextStyle(fontSize: 20)),
-    Text('Library / History', style: TextStyle(fontSize: 20)),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('SONAR'),
-      ),
-      body: Center(
-        // Zeigt den Text passend zum ausgewählten Tab an
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
-          BottomNavigationBarItem(icon: Icon(Icons.mic), label: 'Erkennung'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Suchen'),
-          BottomNavigationBarItem(icon: Icon(Icons.library_music), label: 'Library'),
-        ],
-        currentIndex: _selectedIndex,
-        // Sorgt dafür, dass alle 5 Items Platz haben und ihre Farbe behalten
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.deepPurple,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
+          // Nicht eingeloggt -> WelcomeLayout
+          return const WelcomeScreen();
+        },
       ),
     );
   }

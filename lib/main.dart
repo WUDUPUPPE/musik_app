@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'features/auth/firebase_options.dart';
+import 'features/auth/firebase_service.dart';
+import 'features/screens/home_screen.dart';
+import 'features/screens/welcome_screen.dart';
 
-import 'features/auth/services/auth_service.dart';
-import 'features/auth/screens/welcome_screen.dart';
-import 'home_screen.dart';
 
 // ---- APP START ----
 void main() async {
@@ -42,8 +42,7 @@ class _SonarAppState extends State<SonarApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SONAR',
-      debugShowCheckedModeBanner: false,
-      // ← kein "DEBUG"-Banner
+      debugShowCheckedModeBanner: false, // ← kein "DEBUG"-Banner
       // --- ThemeMode ---
       themeMode: _themeMode,
       // --- LightTheme ---

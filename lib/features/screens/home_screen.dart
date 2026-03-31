@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musik_app/widgets/base_screen.dart';
+import 'package:musik_app/features/widgets/base_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final VoidCallback onToggleTheme;

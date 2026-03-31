@@ -1,9 +1,7 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
-/// Animated SONAR background widget.
-/// Place it inside a Stack as background layer.
-/// Works on any gradient — fully independent.
 class SonarBackground extends StatefulWidget {
   const SonarBackground({super.key});
 
@@ -26,13 +24,11 @@ class _SonarBackgroundState extends State<SonarBackground>
       vsync: this,
       duration: const Duration(milliseconds: 6200),
     )..repeat(reverse: true);
-
     // Gentle float movement
     _floatController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 6200),
     )..repeat(reverse: true);
-
     // Particle drift
     _particleController = AnimationController(
       vsync: this,
@@ -60,7 +56,6 @@ class _SonarBackgroundState extends State<SonarBackground>
             painter: _ParticlePainter(_particleController.value),
           ),
         ),
-
         // ---- SONAR 3D LETTERS ----
         Center(
           child: FittedBox(
@@ -69,8 +64,7 @@ class _SonarBackgroundState extends State<SonarBackground>
               mainAxisSize: MainAxisSize.min,
               children: List.generate(5, (i) {
                 const letters = ['S', 'O', 'N', 'A', 'R'];
-
-                // Each letter has slightly different timing offset
+                // Jeder Buchstabe hat eine leicht versetzte Animation
                 final floatOffset = i * 0.10;
                 final xOffsets = [2.0, 8.0, -4.0, 12.0, -6.0];
                 final rotations = [3, -1.0, 2.2, -2.6, 2.4];
@@ -78,7 +72,6 @@ class _SonarBackgroundState extends State<SonarBackground>
                 return AnimatedBuilder(
                   animation: Listenable.merge([_pulseController, _floatController]),
                   builder: (context, child) {
-
                     // Staggered float per letter
                     final floatVal = sin(
                       (_floatController.value + floatOffset) * pi * 1.76,
@@ -109,7 +102,6 @@ class _SonarBackgroundState extends State<SonarBackground>
     );
   }
 }
-
 /// Single glass-styled letter with animated glow
 class _GlassLetter extends StatelessWidget {
   final String letter;
@@ -124,10 +116,9 @@ class _GlassLetter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Glow intensity pulsing subtly
     final glowOpacity = 0.7 + pulseValue * 0.25;
-    final glowSpread = 10.0 + pulseValue * 12.0; //16.0 zu hell
+    final glowSpread = 13.0 + pulseValue * 12.0; //16.0 zu hell
     final glowBlur = 22.0 + pulseValue * 15.0;
 
     return Container(
@@ -136,47 +127,53 @@ class _GlassLetter extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           // Glow layer behind the letter
-          Text(
-            letter,
-            style: TextStyle(
-              height: 0.85,
-              fontSize: 150,
-              fontWeight: FontWeight.w800,
-              color: Color.fromRGBO(179, 0, 155, glowOpacity * 0.4),
-              shadows: [
-                Shadow(
-                  color: Color.fromRGBO(91, 235, 177, glowOpacity * 0.346),
-                  blurRadius: glowBlur,
-                ),
-                Shadow(
-                  color: Color.fromRGBO(91, 235, 177, glowOpacity * 0.317),
-                  blurRadius: glowSpread,
-                ),
-              ],
+          ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 0.1, sigmaY: 0.1),
+            child: Text(
+              letter,
+              style: TextStyle(
+                height: 0.85,
+                fontSize: 150,
+                fontWeight: FontWeight.w800,
+                color: Color.fromRGBO(179, 0, 155, glowOpacity * 0.34),
+                shadows: [
+                  Shadow(
+                    color: Color.fromRGBO(81,232,166, glowOpacity * 0.546),
+                    blurRadius: glowBlur * 0.63,
+                  ),
+                  Shadow(
+                    color: Color.fromRGBO(81,232,166, glowOpacity * 0.417),
+                    blurRadius: glowSpread * 0.4,
+                  ),
+                ],
+              ),
             ),
           ),
-          // Specular highlight (top shine)
-          ClipRect(
-            child: Align(
-              alignment: Alignment.topCenter,
-              heightFactor: 0.952,
-              child: ShaderMask(
-                shaderCallback: (bounds) => LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.lightGreen.withValues(alpha: 0.48 + pulseValue * 0.1),
-                    Colors.lightGreen.withValues(alpha: 0.0),
-                  ],
-                ).createShader(bounds),
-                blendMode: BlendMode.srcIn,
-                child: Text(
-                  letter,
-                  style: const TextStyle(
-                    height: 0.82,
-                    fontSize: 174,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.lightGreen,
+          // Specular highlight
+          ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 1.2, sigmaY: 1.2),
+            child :ClipRect(
+              child: Align(
+                alignment: Alignment.topCenter,
+                heightFactor: 0.952,
+                child: ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.lightGreen.withValues(alpha: 0.48 + pulseValue * 0.1),
+                      Colors.lightGreen.withValues(alpha: 0.0),
+                    ],
+                  ).createShader(bounds),
+                  blendMode: BlendMode.srcIn,
+                  child: Text(
+                    letter,
+                    style: const TextStyle(
+                      height: 0.82,
+                      fontSize: 174,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.lightGreen,
+                    ),
                   ),
                 ),
               ),
@@ -189,21 +186,23 @@ class _GlassLetter extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Color(0xFF080110),
-                Color(0xFF210232),
-                Color(0xFF370E47),
+                Color(0xFF200230),
+                Color(0xFF350D45),
                 Color(0xFF150D23),
                 Color(0xDA005537),
               ],
-              stops: [0.0, 0.2, 0.5, 0.78, 1.0],
+              stops: [0.0, 0.32, 0.5, 0.78, 1.0],
             ).createShader(bounds),
             blendMode: BlendMode.srcIn,
-            child: Text(
-              letter,
-              style: const TextStyle(
-                height: 0.81,
-                fontSize: 169,
-                fontWeight: FontWeight.w900,
-                color: Colors.green,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 0, sigmaY: 1.0),
+              child: Text(
+                letter,
+                style: const TextStyle(
+                  height: 0.81,
+                  fontSize: 169,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
           ),
@@ -212,7 +211,6 @@ class _GlassLetter extends StatelessWidget {
     );
   }
 }
-
 /// Subtle floating particles
 class _ParticlePainter extends CustomPainter {
   final double progress;
@@ -238,7 +236,6 @@ class _ParticlePainter extends CustomPainter {
       final x = p.x * size.width;
       // Slow upward drift with wrapping
       final y = ((p.y - progress * p.speed * 0.15) % 0.8) * size.height;
-
       // Gentle pulse per particle
       final pulse = sin(progress * pi * 2 * p.speed) * 0.5 + 0.5;
       final opacity = p.opacity * (1.1 + pulse * 0.6);
@@ -267,6 +264,5 @@ class _Particle {
   });
 }
 
-
 // mein lila 179,0,155,
-// mein grüne 81,232,166
+// mein grün 81,232,166

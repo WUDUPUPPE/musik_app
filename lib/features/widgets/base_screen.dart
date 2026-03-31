@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../animation/sonar_BgAnimation.dart';
+import '../animation/sonar_bg_animation.dart';
 
 class BaseScreen extends StatelessWidget {
   final Widget child;
@@ -29,9 +29,10 @@ class BaseScreen extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xBA0C051B),
+              Color(0xBA04000E),
+              Color(0xDB0C0319),
               Color(0xBA250B37),
-              Color(0xC5341355),
+              Color(0xC52A1045),
             ],
           ),
         ),

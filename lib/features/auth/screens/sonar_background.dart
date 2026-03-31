@@ -127,7 +127,7 @@ class _GlassLetter extends StatelessWidget {
 
     // Glow intensity pulsing subtly
     final glowOpacity = 0.7 + pulseValue * 0.25;
-    final glowSpread = 8.0 + pulseValue * 8.0; //16.0 zu hell
+    final glowSpread = 10.0 + pulseValue * 12.0; //16.0 zu hell
     final glowBlur = 22.0 + pulseValue * 15.0;
 
     return Container(

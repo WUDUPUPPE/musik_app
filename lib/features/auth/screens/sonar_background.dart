@@ -79,14 +79,14 @@ class _SonarBackgroundState extends State<SonarBackground>
                   builder: (context, child) {
                     // Staggered float per letter
                     final floatVal = sin(
-                      (_floatController.value + floatOffset) * pi * 2,
+                      (_floatController.value + floatOffset) * pi * 1.5,
                     );
                     final pulseVal = _pulseController.value;
 
                     return Transform.translate(
                       offset: Offset(
                         xOffsets[i] + floatVal * 1.7, // subtle horizontal sway
-                        floatVal * 2.5, // subtle vertical float
+                        floatVal * 2.2, // subtle vertical float
                       ),
                       child: Transform.rotate(
                         angle: rotations[i] * pi / 180,
@@ -128,7 +128,7 @@ class _GlassLetter extends StatelessWidget {
     final glowBlur = 28.0 + pulseValue * 15.0;
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 6),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -151,8 +151,33 @@ class _GlassLetter extends StatelessWidget {
               ],
             ),
           ),
-
-          // Main glass letter
+          // Specular highlight (top shine)
+          ClipRect(
+            child: Align(
+              alignment: Alignment.topCenter,
+              heightFactor: 0.98,
+              child: ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white10.withValues(alpha: 0.35 + pulseValue * 0.1),
+                    Colors.white10.withValues(alpha: 0.0),
+                  ],
+                ).createShader(bounds),
+                blendMode: BlendMode.srcIn,
+                child: Text(
+                  letter,
+                  style: const TextStyle(
+                    fontSize: 174,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.lightGreen,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Main letter
           ShaderMask(
             shaderCallback: (bounds) => const LinearGradient(
               begin: Alignment.topCenter,
@@ -173,33 +198,6 @@ class _GlassLetter extends StatelessWidget {
                 fontSize: 170,
                 fontWeight: FontWeight.w900,
                 color: Colors.black,
-              ),
-            ),
-          ),
-
-          // Specular highlight (top shine)
-          ClipRect(
-            child: Align(
-              alignment: Alignment.topCenter,
-              heightFactor: 1,
-              child: ShaderMask(
-                shaderCallback: (bounds) => LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white10.withValues(alpha: 0.35 + pulseValue * 0.1),
-                    Colors.white10.withValues(alpha: 0.0),
-                  ],
-                ).createShader(bounds),
-                blendMode: BlendMode.srcIn,
-                child: Text(
-                  letter,
-                  style: const TextStyle(
-                    fontSize: 162,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.deepPurple,
-                  ),
-                ),
               ),
             ),
           ),
@@ -233,14 +231,14 @@ class _ParticlePainter extends CustomPainter {
     for (final p in _particles) {
       final x = p.x * size.width;
       // Slow upward drift with wrapping
-      final y = ((p.y - progress * p.speed * 0.15) % 1.0) * size.height;
+      final y = ((p.y - progress * p.speed * 0.15) % 0.8) * size.height;
 
       // Gentle pulse per particle
       final pulse = sin(progress * pi * 2 * p.speed) * 0.5 + 0.5;
       final opacity = p.opacity * (0.6 + pulse * 0.4);
 
       final paint = Paint()
-        ..color = Color.fromRGBO(180, 120, 255, opacity)
+        ..color = Color.fromRGBO(0, 124, 94, opacity)
         ..maskFilter = MaskFilter.blur(BlurStyle.normal, p.size * 0.8);
 
       canvas.drawCircle(Offset(x, y), p.size, paint);

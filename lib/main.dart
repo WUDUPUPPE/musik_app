@@ -4,7 +4,7 @@ import 'firebase_options.dart';
 
 import 'features/auth/services/auth_service.dart';
 import 'features/auth/screens/welcome_screen.dart';
-import 'features/home_screen.dart';
+import 'home_screen.dart';
 
 // ---- APP START ----
 void main() async {

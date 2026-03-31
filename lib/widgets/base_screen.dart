@@ -29,9 +29,9 @@ class BaseScreen extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xBA05020B),
-              Color(0xBA1A0827),
-              Color(0xC51E0B32),
+              Color(0xBA0C051B),
+              Color(0xBA250B37),
+              Color(0xC5341355),
             ],
           ),
         ),

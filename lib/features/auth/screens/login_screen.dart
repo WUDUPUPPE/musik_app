@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) {
         Navigator.of(context).popUntil((route) => route.isFirst);
       }
-    } on Exception catch (e) {
+    } on Exception {
       setState(() {
         _errorMessage = "Your Mail|Password don´t match!";
       });

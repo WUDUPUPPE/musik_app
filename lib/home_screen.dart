@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:musik_app/widgets/base_screen.dart';
-import 'auth/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   final VoidCallback onToggleTheme;
@@ -31,10 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Future<void> _logout() async {
+  /*Future<void> _logout() async {
     await AuthService().signOut();
     // Durch authStateChanges() in main.dart fällt man automatisch auf WelcomeScreen zurück
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

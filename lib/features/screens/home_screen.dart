@@ -39,7 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return BaseScreen(
       appBar: AppBar(
-        title: const Text('SONAR'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: Icon(widget.themeMode == ThemeMode.dark

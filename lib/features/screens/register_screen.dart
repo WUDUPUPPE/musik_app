@@ -60,7 +60,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
-      appBar: AppBar(title: const Text('Registrieren')),
+      appBar: AppBar(title: const Text('Registrieren'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.white,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Form(

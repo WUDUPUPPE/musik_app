@@ -66,7 +66,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
-      appBar: AppBar(title: const Text('Anmelden')),  // AppBar bleibt
+      appBar: AppBar(title: const Text('Anmelden'),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      foregroundColor: Colors.white,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Form(

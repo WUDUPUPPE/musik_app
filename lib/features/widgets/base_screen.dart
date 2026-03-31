@@ -18,6 +18,8 @@ class BaseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true, // <- transparent ->
+      extendBody: true, //<-
       appBar: appBar,
       bottomNavigationBar: bottomNavigationBar,
       backgroundColor: Colors.transparent,

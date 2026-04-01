@@ -37,8 +37,10 @@ dependencies:
   firebase_core: ^4.5.0
   firebase_auth: ^6.2.0
   cloud_firestore: ^6.1.3
-  lottie: ^3.3.2
-  record: ^6.2.0
+  #lottie: ^3.3.2
+  #record: ^6.2.0
+  flutter_acrcloud_plugin: ^0.0.4    # ACRCloud Musik Erkennung
+  permission_handler: ^11.3.0        # Mikrofon-Berechtigung
 
 dev_dependencies:
   flutter_test:

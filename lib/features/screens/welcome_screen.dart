@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../auth/firebase_service.dart';
 import '../widgets/base_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
@@ -47,6 +48,20 @@ class WelcomeScreen extends StatelessWidget {
                       child: const Text('Registrieren'),
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () async {
+                        final authService = AuthService();
+                        await authService.signInAnonymously();
+                      },
+                      child: const Text(
+                        'Als Gast fortfahren →',
+                        style: TextStyle(color: Color(0xFFB0A8D0)),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -54,6 +69,5 @@ class WelcomeScreen extends StatelessWidget {
         ),
       ),
     );
-
   }
 }

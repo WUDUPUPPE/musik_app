@@ -26,8 +26,18 @@ class AuthService {
     );
     return cred.user;
   }
+  // --- Gast Account ---
+  Future<User?> signInAnonymously() async {
+    final credential = await _firebaseAuth.signInAnonymously();
+    return credential.user;
+  }
 
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+    final user = _firebaseAuth.currentUser;
+    if (user?.isAnonymous == true) {
+      await user?.delete();
+    } else {
+      await _firebaseAuth.signOut();
+    }
   }
 }

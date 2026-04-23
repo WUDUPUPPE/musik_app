@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
-  // --- NAV ICON ---
+  // ---- NAV ICON ----
   Widget _navIcon(IconData icon, String label, int index) {
     final isSelected = _selectedIndex == index;
     return GestureDetector(
